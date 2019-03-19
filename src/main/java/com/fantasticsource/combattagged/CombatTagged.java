@@ -4,6 +4,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,7 +25,7 @@ import static com.fantasticsource.combattagged.CombatTagConfig.*;
 public class CombatTagged {
     public static final String MODID = "combattagged";
     public static final String NAME = "Combat Tagged!";
-    public static final String VERSION = "1.12.2.001";
+    public static final String VERSION = "1.12.2.002";
 
     private static Logger logger;
 
@@ -34,7 +35,7 @@ public class CombatTagged {
         MinecraftForge.EVENT_BUS.register(CombatTagged.class);
     }
 
-    private static Map<Integer, Integer> timers = new HashMap<>();
+    private static Map<EntityPlayer, Integer> timers = new HashMap<>();
 
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
@@ -53,17 +54,27 @@ public class CombatTagged {
 
         if (isPlayer(damagedEntity) && (sourceIsPlayer || controllerIsPlayer))
         {
-            timers.put(damagedEntity.getEntityId(), cooldown * 20);
-            if (sourceIsPlayer) timers.put(damageSource.getEntityId(), cooldown * 20);
-            if (controllerIsPlayer) timers.put(damageController.getEntityId(), cooldown * 20);
+            if (showMessages && !timers.containsKey(damagedEntity)) damagedEntity.sendMessage(new TextComponentString("§4[ENTERING COMBAT MODE]"));
+            timers.put((EntityPlayer) damagedEntity, cooldown * 20);
+
+            if (sourceIsPlayer)
+            {
+                if (showMessages && !timers.containsKey(damageSource)) damageSource.sendMessage(new TextComponentString("§4[ENTERING COMBAT MODE]"));
+                timers.put((EntityPlayer) damageSource, cooldown * 20);
+            }
+            if (controllerIsPlayer && damageSource != damageController)
+            {
+                if (showMessages && !timers.containsKey(damageController)) damageController.sendMessage(new TextComponentString("§4[ENTERING COMBAT MODE]"));
+                timers.put((EntityPlayer) damageController, cooldown * 20);
+            }
         }
     }
 
     @SubscribeEvent
     public static void countdown(TickEvent.WorldTickEvent event)
     {
-        Iterator<Map.Entry<Integer, Integer>> iterator = timers.entrySet().iterator();
-        Map.Entry<Integer, Integer> entry;
+        Iterator<Map.Entry<EntityPlayer, Integer>> iterator = timers.entrySet().iterator();
+        Map.Entry<EntityPlayer, Integer> entry;
         int value;
 
         while(iterator.hasNext())
@@ -71,7 +82,11 @@ public class CombatTagged {
             entry = iterator.next();
             value = entry.getValue();
             if (value > 0) entry.setValue(value - 1);
-            else iterator.remove();
+            else
+            {
+                if (showMessages) entry.getKey().sendMessage(new TextComponentString("§2[LEAVING COMBAT MODE]"));
+                iterator.remove();
+            }
         }
     }
 
@@ -79,10 +94,10 @@ public class CombatTagged {
     public static void playerLogged(PlayerEvent.PlayerLoggedOutEvent event)
     {
         EntityPlayer player = event.player;
-        if (timers.containsKey(event.player.getEntityId()))
+        if (timers.containsKey(event.player))
         {
             player.attackEntityFrom(smite, Float.MAX_VALUE);
-            for(int i = 0; i < 3; i++) player.world.addWeatherEffect(new EntityLightningBolt(player.world, player.posX, player.posY, player.posZ, true));
+            if (zeusWasHere) for(int i = 0; i < 3; i++) player.world.addWeatherEffect(new EntityLightningBolt(player.world, player.posX, player.posY, player.posZ, true));
         }
     }
 
