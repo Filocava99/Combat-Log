@@ -1,0 +1,6 @@
+combattagged.config.bypassItems=Bypass All Items
+combattagged.config.cooldown=Cooldown
+combattagged.config.deathMessage=Death Message
+combattagged.config.showMessages=Show Messages
+combattagged.config.smiteCommand=Smite Command
+combattagged.config.lightning=Lightning Effect

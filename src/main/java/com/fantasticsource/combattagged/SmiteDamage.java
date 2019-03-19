@@ -5,7 +5,7 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TextComponentString;
 
-import static com.fantasticsource.combattagged.CombatTagConfig.*;
+import static com.fantasticsource.combattagged.CombatTagConfig.deathMessage;
 
 public class SmiteDamage extends DamageSource
 {

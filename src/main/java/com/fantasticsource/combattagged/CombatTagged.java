@@ -27,24 +27,18 @@ import java.util.Map;
 import static com.fantasticsource.combattagged.CombatTagConfig.*;
 
 @Mod(modid = CombatTagged.MODID, name = CombatTagged.NAME, version = CombatTagged.VERSION, acceptableRemoteVersions = "*")
-public class CombatTagged {
+public class CombatTagged
+{
     public static final String MODID = "combattagged";
     public static final String NAME = "Combat Tagged!";
     public static final String VERSION = "1.12.2.007";
-
-    private static Logger logger;
-
     public static final DamageSource smite = new SmiteDamage();
-
-    public CombatTagged() {
-        MinecraftForge.EVENT_BUS.register(CombatTagged.class);
-    }
-
+    private static Logger logger;
     private static Map<EntityPlayer, Integer> timers = new HashMap<>();
 
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-        logger = event.getModLog();
+    public CombatTagged()
+    {
+        MinecraftForge.EVENT_BUS.register(CombatTagged.class);
     }
 
     @SubscribeEvent
@@ -97,7 +91,7 @@ public class CombatTagged {
         Map.Entry<EntityPlayer, Integer> entry;
         int value;
 
-        while(iterator.hasNext())
+        while (iterator.hasNext())
         {
             entry = iterator.next();
             value = entry.getValue();
@@ -128,20 +122,27 @@ public class CombatTagged {
         player.attackEntityFrom(smite, Float.MAX_VALUE);
         if (player.getHealth() <= 0)
         {
-            if (zeusWasHere) for(int i = 0; i < 3; i++) player.world.addWeatherEffect(new EntityLightningBolt(player.world, player.posX, player.posY, player.posZ, true));
+            if (zeusWasHere) for (int i = 0; i < 3; i++) player.world.addWeatherEffect(new EntityLightningBolt(player.world, player.posX, player.posY, player.posZ, true));
             return true;
         }
         return false;
     }
 
-    @EventHandler
-    public void serverStopping(FMLServerStoppingEvent event){
-        timers.clear();
-        timers.clear();
-    }
-
     public static boolean isPlayer(Entity entity)
     {
         return entity instanceof EntityPlayer;
+    }
+
+    @EventHandler
+    public void preInit(FMLPreInitializationEvent event)
+    {
+        logger = event.getModLog();
+    }
+
+    @EventHandler
+    public void serverStopping(FMLServerStoppingEvent event)
+    {
+        timers.clear();
+        timers.clear();
     }
 }
