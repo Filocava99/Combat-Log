@@ -1,0 +1,4 @@
+Add option for player punishment for logging out while in combat: none, death, banishment
+Add option for for death effect: none, lightning, explosion, implosion
+Add option for a banish command
+Add option for disallowing block placement while in combat (default false)
