@@ -30,11 +30,11 @@ import static com.fantasticsource.combattagged.CombatTagConfig.*;
 public class CombatTagged {
     public static final String MODID = "combattagged";
     public static final String NAME = "Combat Tagged!";
-    public static final String VERSION = "1.12.2.006";
+    public static final String VERSION = "1.12.2.007";
 
     private static Logger logger;
 
-    public static final DamageSource smite = new SmiteDamage(null);
+    public static final DamageSource smite = new SmiteDamage();
 
     public CombatTagged() {
         MinecraftForge.EVENT_BUS.register(CombatTagged.class);

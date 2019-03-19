@@ -7,8 +7,10 @@ import net.minecraft.util.text.TextComponentString;
 
 import static com.fantasticsource.combattagged.CombatTagConfig.*;
 
-public class SmiteDamage extends DamageSource {
-    public SmiteDamage(String damageTypeIn) {
+public class SmiteDamage extends DamageSource
+{
+    public SmiteDamage()
+    {
         super("smite");
         setDamageBypassesArmor();
         setDamageIsAbsolute();
