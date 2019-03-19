@@ -3,15 +3,14 @@ package com.fantasticsource.combattagged;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
@@ -28,7 +27,7 @@ import static com.fantasticsource.combattagged.CombatTagConfig.*;
 public class CombatTagged {
     public static final String MODID = "combattagged";
     public static final String NAME = "Combat Tagged!";
-    public static final String VERSION = "1.12.2.004";
+    public static final String VERSION = "1.12.2.005";
 
     private static Logger logger;
 
@@ -43,6 +42,12 @@ public class CombatTagged {
     @EventHandler
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
+    }
+
+    @EventHandler
+    public static void serverStarting(FMLServerStartingEvent event)
+    {
+        if (smiteCommand) event.registerServerCommand(new SmiteCommand());
     }
 
     @SubscribeEvent
@@ -97,11 +102,24 @@ public class CombatTagged {
     public static void playerLogged(PlayerEvent.PlayerLoggedOutEvent event)
     {
         EntityPlayer player = event.player;
-        if (timers.containsKey(event.player))
+        if (timers.containsKey(player)) punish(player);
+    }
+
+    public static void punish(EntityPlayer player)
+    {
+        smite(player);
+    }
+
+    public static boolean smite(EntityPlayer player)
+    {
+        if (bypassAllItems) player.inventory.dropAllItems();
+        player.attackEntityFrom(smite, Float.MAX_VALUE);
+        if (player.getHealth() <= 0)
         {
-            player.attackEntityFrom(smite, Float.MAX_VALUE);
             if (zeusWasHere) for(int i = 0; i < 3; i++) player.world.addWeatherEffect(new EntityLightningBolt(player.world, player.posX, player.posY, player.posZ, true));
+            return true;
         }
+        return false;
     }
 
     @EventHandler
