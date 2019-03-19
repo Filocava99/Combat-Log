@@ -48,6 +48,7 @@ public class CombatTagConfig {
             "As a side note, OP players are immune to smite, so if all players are OP, this command (and this entire mod) does nothing",
             ""
     })
+    @Config.RequiresMcRestart
     public static boolean smiteCommand = true;
 
     @Config.Comment({
