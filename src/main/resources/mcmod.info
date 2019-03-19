@@ -1,0 +1,16 @@
+[
+{
+  "modid": "combattagged",
+  "name": "Combat Tagged!",
+  "description": "Consequences for combat logging/pvp logging!",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Laike_Endaril"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
