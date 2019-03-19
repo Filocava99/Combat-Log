@@ -21,15 +21,15 @@ import java.util.Map;
 
 import static com.fantasticsource.combattagged.CombatTagConfig.*;
 
-@Mod(modid = CombatTagged.MODID, name = CombatTagged.NAME, version = CombatTagged.VERSION)
+@Mod(modid = CombatTagged.MODID, name = CombatTagged.NAME, version = CombatTagged.VERSION, acceptableRemoteVersions = "*")
 public class CombatTagged {
     public static final String MODID = "combattagged";
     public static final String NAME = "Combat Tagged!";
-    public static final String VERSION = "1.12.2.002";
+    public static final String VERSION = "1.12.2.003";
 
     private static Logger logger;
 
-    public static final DamageSource smite = new DamageSource("smite").setDamageBypassesArmor().setDamageIsAbsolute();
+    public static final DamageSource smite = new SmiteDamage(null);
 
     public CombatTagged() {
         MinecraftForge.EVENT_BUS.register(CombatTagged.class);
@@ -71,7 +71,7 @@ public class CombatTagged {
     }
 
     @SubscribeEvent
-    public static void countdown(TickEvent.WorldTickEvent event)
+    public static void countdown(TickEvent.ServerTickEvent event)
     {
         Iterator<Map.Entry<EntityPlayer, Integer>> iterator = timers.entrySet().iterator();
         Map.Entry<EntityPlayer, Integer> entry;

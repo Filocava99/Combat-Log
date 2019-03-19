@@ -6,12 +6,24 @@ import net.minecraftforge.common.config.Config;
 public class CombatTagConfig {
     @Config.Comment({
             "",
+            "NOTICE: All configuration options are for the SERVER.  On the client, none of these will have any effect",
+            "",
+            "",
             "",
             "How long a player is considered to be 'in combat' after taking damage from, or dealing damage to, another player (in seconds)",
             "If they disconnect before this amount of time has passed, they die",
             ""
     })
     public static int cooldown = 10;
+
+    @Config.Comment({
+            "",
+            "",
+            "Sets the death message! %s is a tag that is replaced by the name of the killed player",
+            ""
+    })
+    public static String deathMessage = "%s was smote for their cowardice!";
+
     @Config.Comment({
             "",
             "",
@@ -20,6 +32,7 @@ public class CombatTagConfig {
             ""
     })
     public static boolean showMessages = true;
+
     @Config.Comment({
             "",
             "",
