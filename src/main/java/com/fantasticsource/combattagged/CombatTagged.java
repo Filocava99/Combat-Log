@@ -3,13 +3,16 @@ package com.fantasticsource.combattagged;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
+import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
@@ -25,7 +28,7 @@ import static com.fantasticsource.combattagged.CombatTagConfig.*;
 public class CombatTagged {
     public static final String MODID = "combattagged";
     public static final String NAME = "Combat Tagged!";
-    public static final String VERSION = "1.12.2.003";
+    public static final String VERSION = "1.12.2.004";
 
     private static Logger logger;
 
@@ -99,6 +102,12 @@ public class CombatTagged {
             player.attackEntityFrom(smite, Float.MAX_VALUE);
             if (zeusWasHere) for(int i = 0; i < 3; i++) player.world.addWeatherEffect(new EntityLightningBolt(player.world, player.posX, player.posY, player.posZ, true));
         }
+    }
+
+    @EventHandler
+    public void serverStopping(FMLServerStoppingEvent event){
+        timers.clear();
+        timers.clear();
     }
 
     public static boolean isPlayer(Entity entity)
