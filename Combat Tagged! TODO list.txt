@@ -1,3 +1,6 @@
+Currently incompatible with openblocks graves
+Currently incompatible with wearable backpacks
+
 Add option for player punishment for logging out while in combat: none, death, banishment
 Add option for for death effect: none, lightning, explosion, implosion
 Add option for a banish command
