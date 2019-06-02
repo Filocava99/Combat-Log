@@ -61,6 +61,8 @@ public class CombatTagged
         Entity damageSource = event.getSource().getImmediateSource();
         Entity damageController = event.getSource().getTrueSource();
 
+        if (damagedEntity == damageSource || damagedEntity == damageController) return;
+
         boolean sourceIsPlayer = damageSource instanceof EntityPlayer;
         boolean controllerIsPlayer = damageController instanceof EntityPlayer;
 
