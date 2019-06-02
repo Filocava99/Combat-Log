@@ -13,13 +13,11 @@ import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLServerStartingEvent;
 import net.minecraftforge.fml.common.event.FMLServerStoppingEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.gameevent.PlayerEvent;
 import net.minecraftforge.fml.common.gameevent.TickEvent;
-import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,7 +32,6 @@ public class CombatTagged
     public static final String NAME = "Combat Tagged!";
     public static final String VERSION = "1.12.2.009a";
     public static final DamageSource smite = new SmiteDamage();
-    private static Logger logger;
     private static Map<EntityPlayer, Integer> timers = new HashMap<>();
 
     public CombatTagged()
@@ -64,10 +61,10 @@ public class CombatTagged
         Entity damageSource = event.getSource().getImmediateSource();
         Entity damageController = event.getSource().getTrueSource();
 
-        boolean sourceIsPlayer = isPlayer(damageSource);
-        boolean controllerIsPlayer = isPlayer(damageController);
+        boolean sourceIsPlayer = damageSource instanceof EntityPlayer;
+        boolean controllerIsPlayer = damageController instanceof EntityPlayer;
 
-        if (isPlayer(damagedEntity) && (sourceIsPlayer || controllerIsPlayer))
+        if (damagedEntity instanceof EntityPlayer && (sourceIsPlayer || controllerIsPlayer))
         {
             if (showMessages && !timers.containsKey(damagedEntity)) damagedEntity.sendMessage(new TextComponentString(TextFormatting.RED + "[ENTERING COMBAT MODE]"));
             timers.put((EntityPlayer) damagedEntity, cooldown * 20);
@@ -112,12 +109,12 @@ public class CombatTagged
         if (timers.containsKey(player)) punish(player);
     }
 
-    public static void punish(EntityPlayer player)
+    private static void punish(EntityPlayer player)
     {
         smite(player);
     }
 
-    public static boolean smite(EntityPlayer player)
+    static boolean smite(EntityPlayer player)
     {
         if (bypassAllItems) player.inventory.dropAllItems();
         player.attackEntityFrom(smite, Float.MAX_VALUE);
@@ -127,17 +124,6 @@ public class CombatTagged
             return true;
         }
         return false;
-    }
-
-    public static boolean isPlayer(Entity entity)
-    {
-        return entity instanceof EntityPlayer;
-    }
-
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
-        logger = event.getModLog();
     }
 
     @EventHandler
