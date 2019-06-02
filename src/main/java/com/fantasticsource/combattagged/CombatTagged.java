@@ -5,6 +5,7 @@ import net.minecraft.entity.effect.EntityLightningBolt;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.text.TextComponentString;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.config.Config;
 import net.minecraftforge.common.config.ConfigManager;
@@ -68,17 +69,17 @@ public class CombatTagged
 
         if (isPlayer(damagedEntity) && (sourceIsPlayer || controllerIsPlayer))
         {
-            if (showMessages && !timers.containsKey(damagedEntity)) damagedEntity.sendMessage(new TextComponentString("§4[ENTERING COMBAT MODE]"));
+            if (showMessages && !timers.containsKey(damagedEntity)) damagedEntity.sendMessage(new TextComponentString(TextFormatting.RED + "[ENTERING COMBAT MODE]"));
             timers.put((EntityPlayer) damagedEntity, cooldown * 20);
 
             if (sourceIsPlayer)
             {
-                if (showMessages && !timers.containsKey(damageSource)) damageSource.sendMessage(new TextComponentString("§4[ENTERING COMBAT MODE]"));
+                if (showMessages && !timers.containsKey(damageSource)) damageSource.sendMessage(new TextComponentString(TextFormatting.RED + "[ENTERING COMBAT MODE]"));
                 timers.put((EntityPlayer) damageSource, cooldown * 20);
             }
             if (controllerIsPlayer && damageSource != damageController)
             {
-                if (showMessages && !timers.containsKey(damageController)) damageController.sendMessage(new TextComponentString("§4[ENTERING COMBAT MODE]"));
+                if (showMessages && !timers.containsKey(damageController)) damageController.sendMessage(new TextComponentString(TextFormatting.RED + "[ENTERING COMBAT MODE]"));
                 timers.put((EntityPlayer) damageController, cooldown * 20);
             }
         }
@@ -98,7 +99,7 @@ public class CombatTagged
             if (value > 0) entry.setValue(value - 1);
             else
             {
-                if (showMessages) entry.getKey().sendMessage(new TextComponentString("§2[LEAVING COMBAT MODE]"));
+                if (showMessages) entry.getKey().sendMessage(new TextComponentString(TextFormatting.GREEN + "[LEAVING COMBAT MODE]"));
                 iterator.remove();
             }
         }
