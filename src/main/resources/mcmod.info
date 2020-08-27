@@ -1,0 +1,16 @@
+[
+{
+  "modid": "combatlog",
+  "name": "Combat Log",
+  "description": "Simple combat log",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Tigierrei"],
+  "credits": "Laike_Endaril",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

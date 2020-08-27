@@ -1,0 +1,17 @@
+[12:09:18] [Server thread/INFO]: Starting minecraft server version 1.7.10
+[12:09:24] [Server thread/INFO]: Loading properties
+[12:09:24] [Server thread/INFO]: Default game type: SURVIVAL
+[12:09:24] [Server thread/INFO]: Generating keypair
+[12:09:24] [Server thread/INFO]: Starting Minecraft server on *:25565
+[12:09:24] [Server thread/INFO]: Preparing level "world"
+[12:09:25] [Server thread/INFO]: Preparing start region for level 0
+[12:09:25] [Server thread/INFO]: Done (0,889s)! For help, type "help" or "?"
+[12:09:28] [User Authenticator #1/INFO]: UUID of player tigierrei is 2842ec6e-a599-4662-9847-2a1edbb9619b
+[12:09:28] [Server thread/INFO]: tigierrei[/127.0.0.1:54157] logged in with entity id 236 at (52.79355198631905, 67.0, 258.92177682563954)
+[12:09:28] [Server thread/INFO]: tigierrei joined the game
+[12:09:54] [Server thread/INFO]: Stopping server
+[12:09:54] [Server thread/INFO]: Saving players
+[12:09:54] [Server thread/INFO]: Saving worlds
+[12:09:54] [Server thread/INFO]: Saving chunks for level 'world'/Overworld
+[12:09:54] [Server thread/INFO]: Saving chunks for level 'world'/Nether
+[12:09:54] [Server thread/INFO]: Saving chunks for level 'world'/The End
