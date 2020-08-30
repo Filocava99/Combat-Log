@@ -59,6 +59,7 @@ public class CombatLog {
     public void countdown(TickEvent.ServerTickEvent event) {
         elapsedTicks -= 1;
         if(elapsedTicks == 0){
+            elapsedTicks = 20;
             Iterator<Map.Entry<EntityPlayer, Integer>> iterator = timers.entrySet().iterator();
             Map.Entry<EntityPlayer, Integer> entry;
             int value;
