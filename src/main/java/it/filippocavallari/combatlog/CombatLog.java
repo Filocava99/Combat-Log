@@ -20,9 +20,11 @@ import java.util.Map;
 public class CombatLog {
     public static final String MODID = "combatlog";
     public static final String NAME = "Combat Log";
-    public static final String VERSION = "1.0.0";
-    public static final int timer = Configs.cooldown * 20;
+    public static final String VERSION = "1.0.1";
+    public static final int timer = Configs.cooldown;
     private static final Map<EntityPlayer, Integer> timers = new HashMap<EntityPlayer, Integer>();
+
+    private short elapsedTicks = 20;
 
     public CombatLog() {
         MinecraftForge.EVENT_BUS.register(this);
@@ -55,20 +57,23 @@ public class CombatLog {
 
     @SubscribeEvent
     public void countdown(TickEvent.ServerTickEvent event) {
-        Iterator<Map.Entry<EntityPlayer, Integer>> iterator = timers.entrySet().iterator();
-        Map.Entry<EntityPlayer, Integer> entry;
-        int value;
+        elapsedTicks -= 1;
+        if(elapsedTicks == 0){
+            Iterator<Map.Entry<EntityPlayer, Integer>> iterator = timers.entrySet().iterator();
+            Map.Entry<EntityPlayer, Integer> entry;
+            int value;
 
-        while (iterator.hasNext()) {
-            entry = iterator.next();
-            value = entry.getValue();
-            if (value > 0) {
-                entry.setValue(value - 1);
-            } else {
-                if (Configs.showMessages) {
-                    entry.getKey().addChatComponentMessage(new ChatComponentText("[LEAVING COMBAT MODE]"));
+            while (iterator.hasNext()) {
+                entry = iterator.next();
+                value = entry.getValue();
+                if (value > 0) {
+                    entry.setValue(value - 1);
+                } else {
+                    if (Configs.showMessages) {
+                        entry.getKey().addChatComponentMessage(new ChatComponentText("[LEAVING COMBAT MODE]"));
+                    }
+                    iterator.remove();
                 }
-                iterator.remove();
             }
         }
     }
@@ -77,6 +82,7 @@ public class CombatLog {
     public void playerLogged(PlayerEvent.PlayerLoggedOutEvent event) {
         EntityPlayer player = event.player;
         if (timers.containsKey(player)) {
+            timers.remove(player);
             player.inventory.dropAllItems();
             player.setDead();
         }
